@@ -1,8 +1,8 @@
 python-dotenv
 pandas
 numpy
-pymongo
 certifi
+pymongo[srv]>=4.0.0
 
 # to be enabled for final package
 # -e.
