@@ -1,6 +1,6 @@
 # phishnet [WIP]
 
-## An automated phishing attack detection using MLOps pipeline
+## A phishing attack detection using MLOps pipeline
 
 ### Problem Statement
 
