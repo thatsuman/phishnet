@@ -1,7 +1,7 @@
-from pymongo import MongoClient
-import certifi
 import os
+import certifi
 from dotenv import load_dotenv
+from pymongo import MongoClient
 
 # Load environment variables from .env file
 load_dotenv()
