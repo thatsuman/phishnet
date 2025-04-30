@@ -1,21 +1,19 @@
 import os
 import sys
 import json 
-
+import certifi
+import pymongo
+import numpy as np
+import pandas as pd
 from dotenv import load_dotenv
+from phishnet.logging.logger import logging
+from phishnet.exception.exception import PhishnetException
+
 load_dotenv()
 
 MONGODB_URL = os.getenv("MONGODB_URL")
 
-import certifi
 ca = certifi.where()
-
-import pandas as pd
-import numpy as np
-import pymongo
-from phishnet.exception.exception import PhishnetException
-from phishnet.logging.logger import logging
-
 
 class NetworkDataExtract():
     def __init__(self):
@@ -50,13 +48,12 @@ class NetworkDataExtract():
         except Exception as e:
             raise PhishnetException(e, sys)
 
-
 if __name__ == '__main__':
     FILE_PATH = 'network_data\phisingData.csv'
-    DATABASE = "phishnetdb"
-    Collection = "NetworkData"
+    DATABASE = "phishnetdb" # database name in mongodb
+    Collection = "NetworkData" # collection name in database
     networkobj = NetworkDataExtract()
     records = networkobj.csv_to_json_convertor(file_path=FILE_PATH)
     print(records)
     no_of_records = networkobj.insert_data_to_mongodb(records, DATABASE, Collection)
-    print(no_of_records)
+    print("Total number of record is: ", no_of_records)
