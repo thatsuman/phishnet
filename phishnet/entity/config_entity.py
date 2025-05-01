@@ -16,7 +16,7 @@ class TrainingPipelineConfig:
 
 class DataIngestionConfig:
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):
-        self.data_ingestion_dir:str=os.path.join(
+        self.data_ingestion_dir:str = os.path.join(
             training_pipeline_config.artifact_dir,
             training_pipeline.DATA_INGESTION_DIR_NAME
         )
