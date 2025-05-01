@@ -3,6 +3,7 @@ pandas
 numpy
 certifi
 pymongo[srv]>=4.0.0
+scikit-learn
 
 # to be enabled for final package
 # -e.
