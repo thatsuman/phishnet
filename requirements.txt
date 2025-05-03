@@ -4,6 +4,8 @@ numpy
 certifi
 pymongo[srv]>=4.0.0
 scikit-learn
+dill
+pyaml
 
 # to be enabled for final package
 # -e.
