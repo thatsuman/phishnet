@@ -7,6 +7,9 @@ import numpy as np
 from phishnet.logging.logger import logging
 from phishnet.exception.exception import PhishnetException
 
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import r2_score
+
 
 def read_yaml_file(file_path: str) -> dict:
     try:
@@ -77,3 +80,40 @@ def load_object(file_path: str) -> object:
         
     except Exception as e:
         raise PhishnetException(e, sys) from e
+    
+def evaluate_models(x_train, y_train, x_test, y_test, models, param):
+    """
+    Evaluate multiple models using GridSearchCV and return a report of test scores.
+    """
+    try:
+        report = {}
+
+        for model_name, model in models.items():
+            params = param.get(model_name, {})
+
+            # Perform GridSearchCV for hyperparameter tuning
+            gs = GridSearchCV(model, params, cv=3)
+            gs.fit(x_train, y_train)
+
+            # Train the model with the best parameters
+            model.set_params(**gs.best_params_)
+            model.fit(x_train, y_train)
+
+            # Evaluate the model on train and test data
+            train_predictions = model.predict(x_train)
+            test_predictions = model.predict(x_test)
+
+            train_score = r2_score(y_train, train_predictions)
+            test_score = r2_score(y_test, test_predictions)
+
+            # Store the test score in the report
+            report[model_name] = test_score
+
+        return report
+
+    except Exception as e:
+        raise PhishnetException(e, sys)
+
+
+
+

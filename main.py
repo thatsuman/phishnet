@@ -4,7 +4,8 @@ from phishnet.exception.exception import PhishnetException
 from phishnet.components.data_ingestion import DataIngestion
 from phishnet.components.data_validation import DataValidation
 from phishnet.components.data_transformation import DataTransformation
-from phishnet.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformationConfig
+from phishnet.components.model_trainer import ModelTrainer
+from phishnet.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformationConfig, ModelTrainerConfig
 from phishnet.entity.config_entity import TrainingPipelineConfig
 
 if __name__=='__main__':
@@ -35,6 +36,14 @@ if __name__=='__main__':
         print(datatransformationartifact)
         logging.info("Data Tranformation Completed")
 
+        # model training
+        logging.info("Model Training started")
+        modeltrainerconfig = ModelTrainerConfig(trainingpipelineconfig)
+        model_trainer = ModelTrainer(model_trainer_config = modeltrainerconfig,
+                                    data_transformation_artifact = datatransformationartifact)
+        modeltrainerartifact = model_trainer.initiate_model_trainer()
+
+        logging.info("Model Training artifact created")
 
     except Exception as e:
            # Raise custom exception with error details
