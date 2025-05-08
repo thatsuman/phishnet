@@ -81,33 +81,29 @@ def load_object(file_path: str) -> object:
     except Exception as e:
         raise PhishnetException(e, sys) from e
     
-def evaluate_models(x_train, y_train, x_test, y_test, models, param):
-    """
-    Evaluate multiple models using GridSearchCV and return a report of test scores.
-    """
+def evaluate_models(X_train, y_train,X_test,y_test,models,param):
     try:
         report = {}
 
-        for model_name, model in models.items():
-            params = param.get(model_name, {})
+        for i in range(len(list(models))):
+            model = list(models.values())[i]
+            para=param[list(models.keys())[i]]
 
-            # Perform GridSearchCV for hyperparameter tuning
-            gs = GridSearchCV(model, params, cv=3)
-            gs.fit(x_train, y_train)
+            gs = GridSearchCV(model,para,cv=3)
+            gs.fit(X_train,y_train)
 
-            # Train the model with the best parameters
             model.set_params(**gs.best_params_)
-            model.fit(x_train, y_train)
+            model.fit(X_train,y_train)
+            
+            y_train_pred = model.predict(X_train)
 
-            # Evaluate the model on train and test data
-            train_predictions = model.predict(x_train)
-            test_predictions = model.predict(x_test)
+            y_test_pred = model.predict(X_test)
 
-            train_score = r2_score(y_train, train_predictions)
-            test_score = r2_score(y_test, test_predictions)
+            train_model_score = r2_score(y_train, y_train_pred)
 
-            # Store the test score in the report
-            report[model_name] = test_score
+            test_model_score = r2_score(y_test, y_test_pred)
+
+            report[list(models.keys())[i]] = test_model_score
 
         return report
 

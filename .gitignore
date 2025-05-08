@@ -1,5 +1,7 @@
 Artifacts
 logs
+mlruns
+
 # env for phishnet. To activate run: conda activate phishenv/
 phishenv
 
