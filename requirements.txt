@@ -10,6 +10,7 @@ mlflow
 dagshub
 fastapi
 uvicorn
+python-multipart
 
 # to be enabled for final package
 # -e.
