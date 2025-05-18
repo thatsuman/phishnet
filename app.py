@@ -34,10 +34,10 @@ database = client[DATA_INGESTION_DATABASE_NAME]
 collection = database[DATA_INGESTION_COLLECTION_NAME]
 
 # FastAPI app setup
-app = FastAPI()
+phishnetapp = FastAPI()
 origins = ["*"]
 
-app.add_middleware(
+phishnetapp.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
@@ -45,11 +45,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/", tags=["authentication"])
+@phishnetapp.get("/", tags=["authentication"])
 async def index():
     return RedirectResponse(url="/docs")
 
-@app.get("/train")
+@phishnetapp.get("/train")
 async def train_route():
     try:
         train_pipeline = TrainingPipeline()
@@ -59,4 +59,4 @@ async def train_route():
         raise PhishnetException(e, sys)
 
 if __name__ == "__main__":
-    app_run(app, host="localhost", port=8000)
+    app_run(phishnetapp, host="localhost", port=8000)
