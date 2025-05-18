@@ -8,6 +8,8 @@ dill
 pyaml
 mlflow
 dagshub
+fastapi
+uvicorn
 
 # to be enabled for final package
 # -e.
