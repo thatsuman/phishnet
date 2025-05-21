@@ -6,6 +6,7 @@ import pickle
 import numpy as np
 from phishnet.logging.logger import logging
 from phishnet.exception.exception import PhishnetException
+from phishnet.utils.ml_utils.metric.classification_metric import get_classification_score
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import r2_score
@@ -81,26 +82,33 @@ def load_object(file_path: str) -> object:
     except Exception as e:
         raise PhishnetException(e, sys) from e
     
-def evaluate_models(X_train, y_train,X_test,y_test,models,param):
+def evaluate_models(X_train, y_train, X_test, y_test, models, param):
     try:
         report = {}
 
         for i in range(len(list(models))):
             model = list(models.values())[i]
-            para=param[list(models.keys())[i]]
+            para = param[list(models.keys())[i]]
 
-            gs = GridSearchCV(model,para,cv=3)
-            gs.fit(X_train,y_train)
+            gs = GridSearchCV(model, para, cv=3)
+            gs.fit(X_train, y_train)
 
             model.set_params(**gs.best_params_)
-            model.fit(X_train,y_train)
+            model.fit(X_train, y_train)
             
             y_train_pred = model.predict(X_train)
-
             y_test_pred = model.predict(X_test)
 
-            train_model_score = r2_score(y_train, y_train_pred)
+            # Calculate classification metrics on test set
+            metrics = get_classification_score(y_true=y_test, y_pred=y_test_pred)
+            precision = metrics.precision_score
+            recall = metrics.recall_score
+            f1 = metrics.f1_score
 
+            # Log model name and metrics
+            logging.info(f"Model: {list(models.keys())[i]} | Precision: {precision:.4f} | Recall: {recall:.4f} | F1 Score: {f1:.4f}")
+
+            train_model_score = r2_score(y_train, y_train_pred)
             test_model_score = r2_score(y_test, y_test_pred)
 
             report[list(models.keys())[i]] = test_model_score
