@@ -125,6 +125,7 @@ class ModelTrainer:
             test_metric_artifact = classification_test_metric
         )
         logging.info(f"Model Trainer Artifact: {model_trainer_artifact}")
+        logging.info(f"Best Model: {best_model_name} with score: {best_model_score}")
 
         return model_trainer_artifact
 
