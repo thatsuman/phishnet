@@ -1,4 +1,5 @@
 name: workflow
+description: Workflow for CI/CD with ECR image build and push
 
 on:
   push:
@@ -9,7 +10,7 @@ on:
 
 jobs:
   integration:
-    name: Continuous integration
+    name: Continuous Integration
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -33,6 +34,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y jq unzip
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
