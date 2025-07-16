@@ -115,6 +115,9 @@ class TrainingPipeline:
     ## local final model is going to s3 bucket 
     def sync_saved_model_dir_to_s3(self):
         try:
+            # Ensure the directory exists before syncing
+            if not os.path.exists(self.trainingpipelineconfig.model_dir):
+                os.makedirs(self.trainingpipelineconfig.model_dir, exist_ok=True)
             aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/final_model/{self.trainingpipelineconfig.timestamp}"
             self.s3_sync.sync_folder_to_s3(
                 folder=self.trainingpipelineconfig.model_dir,
