@@ -24,8 +24,8 @@ from phishnet.entity.artifact_entity import (
     ModelTrainerArtifact,
 )
 
-# from phishnet.constant.training_pipeline import TRAINING_BUCKET_NAME
-# from phishnet.cloud.s3_syncer import S3Sync
+from phishnet.constant.training_pipeline import TRAINING_BUCKET_NAME
+from phishnet.cloud.s3_syncer import S3Sync
 from phishnet.constant.training_pipeline import SAVED_MODEL_DIR
 
 
@@ -33,6 +33,7 @@ class TrainingPipeline:
     def __init__(self):
         # Initialize the training pipeline configuration
         self.trainingpipelineconfig = TrainingPipelineConfig()
+        self.s3_sync = S3Sync()
 
     def start_data_ingestion(self):
         try:
@@ -99,6 +100,29 @@ class TrainingPipeline:
 
         except Exception as e:
             raise PhishnetException(e, sys)
+        
+        ## local artifact is going to s3 bucket    
+    def sync_artifact_dir_to_s3(self):
+        try:
+            aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/artifact/{self.trainingpipelineconfig.timestamp}"
+            self.s3_sync.sync_folder_to_s3(
+                folder=self.trainingpipelineconfig.artifact_dir,
+                aws_bucket_url=aws_bucket_url
+            )
+        except Exception as e:
+            raise PhishnetException(e, sys)
+
+    ## local final model is going to s3 bucket 
+    def sync_saved_model_dir_to_s3(self):
+        try:
+            aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/final_model/{self.trainingpipelineconfig.timestamp}"
+            self.s3_sync.sync_folder_to_s3(
+                folder=self.trainingpipelineconfig.model_dir,
+                aws_bucket_url=aws_bucket_url
+            )
+        except Exception as e:
+            raise PhishnetException(e, sys)
+    
 
     def run_pipeline(self):
         try:
@@ -107,6 +131,9 @@ class TrainingPipeline:
             data_transformation_artifact = self.start_data_transformation(datavalidationartifact = data_validation_artifact)
             model_trainer_artifact = self.start_model_trainer(datatransformationartifact = data_transformation_artifact)
 
+            self.sync_artifact_dir_to_s3()
+            self.sync_saved_model_dir_to_s3()
+            
             return model_trainer_artifact
         
         except Exception as e:

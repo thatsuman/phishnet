@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 from phishnet.constant import training_pipeline
+from phishnet.constant.training_pipeline import SAVED_MODEL_DIR
 
 print(training_pipeline.PIPELINE_NAME)
 print(training_pipeline.ARTIFACT_DIR)
@@ -12,6 +13,7 @@ class TrainingPipelineConfig:
         self.artifact_name = training_pipeline.ARTIFACT_DIR
         self.artifact_dir = os.path.join(self.artifact_name, timestamp)
         self.timestamp: str = timestamp
+        self.model_dir = SAVED_MODEL_DIR 
 
 
 class DataIngestionConfig:
@@ -113,5 +115,4 @@ class ModelTrainerConfig:
             )
         self.expected_accuracy: float = training_pipeline.MODEL_TRAINER_EXPECTED_SCORE
         self.overfitting_underfitting_threshold = training_pipeline.MODEL_TRAINER_OVER_FITTING_UNDER_FITTING_THRESHOLD
-        
-        
+
