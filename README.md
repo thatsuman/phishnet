@@ -11,3 +11,7 @@ How can we build a reliable, production-grade system to detect phishing attacks 
 ### How this project solves the problem?
 
 This project appears to be a comprehensive MLOps pipeline designed to process network security data related to phishing attacks. The system follows a modular architecture with clearly defined stages for data processing, model training, evaluation, and deployment.
+
+#### Run the project
+
+`python app.py`
