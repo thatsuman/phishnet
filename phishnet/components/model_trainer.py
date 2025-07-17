@@ -27,7 +27,15 @@ from sklearn.metrics import r2_score
 import mlflow
 
 import dagshub
-dagshub.init(repo_owner='thatsuman', repo_name='phishnet', mlflow=True)
+import os
+
+dagshub.init(
+    repo_owner='thatsuman',
+    repo_name='phishnet',
+    mlflow=True,
+    user=os.getenv('DAGSHUB_USER'),
+    token=os.getenv('DAGSHUB_TOKEN')
+)
 
 class ModelTrainer:
     def __init__(self, model_trainer_config:ModelTrainerConfig, data_transformation_artifact:DataTransformationArtifact):
