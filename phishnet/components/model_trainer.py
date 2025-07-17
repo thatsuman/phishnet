@@ -33,7 +33,6 @@ dagshub.init(
     repo_owner='thatsuman',
     repo_name='phishnet',
     mlflow=True,
-    user=os.getenv('DAGSHUB_USER'),
     token=os.getenv('DAGSHUB_TOKEN')
 )
 
