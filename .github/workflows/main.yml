@@ -88,7 +88,10 @@ jobs:
 
       - name: Stop and remove container if running
         run: |
-          docker ps -q --filter "name=phishnet" | grep -q . && docker stop phishnet && docker rm -fv phishnet
+          if docker ps -q --filter "name=phishnet" | grep -q .; then
+            docker stop phishnet
+            docker rm -fv phishnet
+          fi
 
       - name: Clean previous images and containers
         run: |
