@@ -32,8 +32,7 @@ import os
 dagshub.init(
     repo_owner='thatsuman',
     repo_name='phishnet',
-    mlflow=True,
-    token=os.getenv('DAGSHUB_TOKEN')
+    mlflow=True
 )
 
 class ModelTrainer:

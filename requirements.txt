@@ -7,7 +7,7 @@ scikit-learn
 dill
 pyaml
 mlflow
-dagshub
+dagshub>=0.3.0
 fastapi
 uvicorn
 python-multipart
