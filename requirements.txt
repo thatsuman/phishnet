@@ -6,7 +6,7 @@ pymongo[srv]>=4.0.0
 scikit-learn
 dill
 pyaml
-mlflow
+mlflow==2.22.0
 dagshub>=0.3.0
 fastapi
 uvicorn

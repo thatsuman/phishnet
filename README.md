@@ -14,4 +14,8 @@ This project appears to be a comprehensive MLOps pipeline designed to process ne
 
 #### Run the project
 
+`create python env var`
+
+`pip install -r requirements.txt`
+
 `python app.py`
